@@ -33,7 +33,7 @@ enum class Category
     korean,
     japanese,
     chinese,
-    wedtern,
+    western,
     asian,
     chicken,
     vagan,

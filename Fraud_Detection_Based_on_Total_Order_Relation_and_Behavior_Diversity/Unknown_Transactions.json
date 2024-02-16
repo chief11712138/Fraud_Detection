@@ -1,0 +1,32 @@
+{
+  "Transactions": [
+    {
+      "user_id": "ABC123",
+      "time": "08:00 15/03/2024",
+      "order_address": "123 Main St, Burnaby, BC V0V0V0",
+      "shipping_address": "456 Elm St, Burnaby, BC V0V0V0",
+      "store_address": "789 Oak St, Burnaby, BC V0V0V0",
+      "category": [ "korean", "dessert" ],
+      "amount": "20.00",
+      "payment_method": "credit_card",
+      "tip_amount": "3.00",
+      "delay_time": "10:00 16/03/2024",
+      "is_using_redeem": true,
+      "is_pickup": false
+    },
+    {
+      "user_id": "DEF456",
+      "time": "18:00 15/03/2024",
+      "order_address": "321 Main St",
+      "shipping_address": "654 Elm St",
+      "store_address": "987 Oak St",
+      "category": [ "chinese", "vagan" ],
+      "amount": "35.00",
+      "payment_method": "debit_card",
+      "tip_amount": "5.00",
+      "delay_time": "20:00 16/03/2024",
+      "is_using_redeem": false,
+      "is_pickup": true
+    }
+  ]
+}
