@@ -132,8 +132,6 @@ private:
     // The UUID will be: ABC123MBBBKO011000101
     string UUIDGenerator(const Transactions& transaction);
 
-    void RemoveDuplicateRecords();
-
     // #Deprecated
     // Sort user's transactions by time (morning, noon, afternoon, evening)
     void sortTransactionsByTime();

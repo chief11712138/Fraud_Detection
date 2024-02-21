@@ -29,9 +29,6 @@ void AllTransactions::Initialize()
     // From string to enum
     PreprocessAllTransactionsInString(all_transactions_in_string_file);
 
-    // Remove duplicate records for each user
-    RemoveDuplicateRecords();
-
     // Calculate the necessary values
     InitializeBP();
 

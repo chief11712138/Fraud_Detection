@@ -2,7 +2,7 @@
 
 map<string, bool> AllTransactions::InitializeUnkonwnTransactions()
 {
-
+    
 }
 
 void AllTransactions::fraudDetection()

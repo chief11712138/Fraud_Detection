@@ -906,28 +906,6 @@ string AllTransactions::UUIDGenerator(const Transactions& transaction)
     return UUID;
 }
 
-void AllTransactions::RemoveDuplicateRecords()
-{
-    for (auto& user : all_users_transactions)
-    {
-        std::vector<Transactions> unique_transactions;
-
-        for (auto& transaction : user.second)
-        {
-            auto it = all_users_transactions[user.first].find(transaction);
-            // When the transaction not found in the set
-            if (it == all_users_transactions[user.first].end())
-            {
-                all_users_transactions.insert({ user.first, {transaction} });
-                total_unique_transactions_number++;
-            }
-        }
-
-        user.second = unique_transactions;
-        total_unique_transactions_number += user.second.size();
-    }
-}
-
 void AllTransactions::sortTransactionsByTime()
 {
     vector<Transactions> morning_transactions;
