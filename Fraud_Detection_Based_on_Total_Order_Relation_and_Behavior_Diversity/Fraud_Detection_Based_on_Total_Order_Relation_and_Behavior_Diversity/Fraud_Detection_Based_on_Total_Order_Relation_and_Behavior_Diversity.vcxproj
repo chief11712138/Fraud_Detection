@@ -129,11 +129,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AllTransactions_Helper.cpp" />
+    <ClCompile Include="AllTransactions_API.cpp" />
+    <ClCompile Include="Fruad_Detection_Helper.cpp" />
+    <ClCompile Include="IO_Functions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="AllTransactions.cpp" />
+    <ClCompile Include="Parameter_Calculation.cpp" />
+    <ClCompile Include="Parameter_Calculation_Helper.cpp" />
+    <ClCompile Include="Fraud_Detection.cpp" />
+    <ClCompile Include="Structures.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="enumerated_data.h" />
+    <ClInclude Include="EnumeratedData.h" />
     <ClInclude Include="AllTransactions.h" />
   </ItemGroup>
   <ItemGroup>

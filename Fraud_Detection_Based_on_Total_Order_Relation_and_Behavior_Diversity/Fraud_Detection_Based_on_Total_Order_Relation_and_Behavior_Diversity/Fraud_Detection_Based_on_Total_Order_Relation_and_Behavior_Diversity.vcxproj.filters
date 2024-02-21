@@ -13,21 +13,57 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\AllTransactions">
+      <UniqueIdentifier>{bbce8236-75e7-4a49-8baa-e20256be3866}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AllTransactions">
+      <UniqueIdentifier>{471e3251-bb35-4ee7-b26a-0767ca1a8c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AllTransactions\Parameter_Calculation">
+      <UniqueIdentifier>{36f93644-9b97-467c-9ec0-4b231355be59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AllTransactions\Fraud_Detection">
+      <UniqueIdentifier>{781e6d0a-b848-43d4-b8b9-e33c919d6add}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AllTransactions_API.cpp">
+      <Filter>Source Files\AllTransactions</Filter>
+    </ClCompile>
     <ClCompile Include="AllTransactions.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\AllTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="AllTransactions_Helper.cpp">
+      <Filter>Source Files\AllTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="IO_Functions.cpp">
+      <Filter>Source Files\AllTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Structures.h">
+      <Filter>Header Files\AllTransactions</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameter_Calculation_Helper.cpp">
+      <Filter>Source Files\AllTransactions\Parameter_Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="Parameter_Calculation.cpp">
+      <Filter>Source Files\AllTransactions\Parameter_Calculation</Filter>
+    </ClCompile>
+    <ClCompile Include="Fraud_Detection.cpp">
+      <Filter>Source Files\AllTransactions\Fraud_Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="Fruad_Detection_Helper.cpp">
+      <Filter>Source Files\AllTransactions\Fraud_Detection</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AllTransactions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\AllTransactions</Filter>
     </ClInclude>
-    <ClInclude Include="enumerated_data.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="EnumeratedData.h">
+      <Filter>Header Files\AllTransactions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

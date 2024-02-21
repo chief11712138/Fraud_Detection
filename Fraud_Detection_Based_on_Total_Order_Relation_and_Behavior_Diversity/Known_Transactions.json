@@ -6,7 +6,7 @@
       "order_address": "123 Main St, Burnaby, BC V0V0V0",
       "shipping_address": "456 Elm St, Burnaby, BC V0V0V0",
       "store_address": "789 Oak St, Burnaby, BC V0V0V0",
-      "category": [ "korean", "dessert" ],
+      "category": "korean"
       "amount": "20.00",
       "payment_method": "credit_card",
       "tip_amount": "3.00",
@@ -20,7 +20,7 @@
       "order_address": "321 Main St",
       "shipping_address": "654 Elm St",
       "store_address": "987 Oak St",
-      "category": [ "chinese", "vagan" ],
+      "category": "chinese",
       "amount": "35.00",
       "payment_method": "debit_card",
       "tip_amount": "5.00",

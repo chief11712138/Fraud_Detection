@@ -1,23 +1,32 @@
-// Boost Graph Library Required. Refference: https://sourceforge.net/projects/boost/files/
+// Boost Graph Library Required. Reference: https://sourceforge.net/projects/boost/files/
+// Json for Modern C++ Required. Reference: https://github.com/nlohmann/json
+
+// There are 3 different files contain the implementation of member functions
+// 1. AllTransactions.cpp // Include the constructor function
+// 2. AllTransactions_Helper_Functions.cpp // Include all helper functions
+// 3. AllTransactions_Main_Functions.cpp // Include all main functions which is the API for the user
 
 #pragma once
 
 #include <boost/graph/adjacency_list.hpp>
-
-#include "enumerated_data.h"
+#include <boost/numeric/ublas/io.hpp>
 #include "nlohmann/json.hpp"
+
+#include "EnumeratedData.h"
+#include "Structures.h"
 
 #include <iostream>
 #include <string>
 #include <vector>
 #include <set>
 #include <map>
+#include <cmath>
 #include <fstream>
 #include <cstdlib>
-
-
-// #TODO
-// Package Boost Graph Library with the project
+#include <functional>
+#include <algorithm>
+#include <cctype>
+#include <limits>
 
 using std::cout;
 using std::endl;
@@ -27,127 +36,7 @@ using std::vector;
 using std::set;
 using std::map;
 using std::cerr;
-
-// Transaction attributes
-struct Transactions
-{
-    string user_id;
-
-    Time time;
-    Location order_address;
-    Location shipping_address;
-    Location store_address;
-    Category category;
-    Amount amount;
-    PaymentMethod payment_method;
-    TipAmount tip_amount;
-    DelayTime delay_time;
-
-    bool is_using_redeem;
-    bool is_pickup;
-
-    // Default Constructor
-    Transactions() : user_id(""),
-                    time(Time::morning),
-                    order_address(Location::vancouver),
-                    shipping_address(Location::vancouver),
-                    store_address(Location::vancouver),
-                    category(Category::korean),
-                    amount(Amount::a0_10),
-                    payment_method(PaymentMethod::credit_card),
-                    tip_amount(TipAmount::ta0_5),
-                    delay_time(DelayTime::dt0_2),
-                    is_using_redeem(false),
-                    is_pickup(false) {}
-
-    // Constructors
-    Transactions(const Transactions& t) : user_id(t.user_id),
-                                          time(t.time),
-                                          order_address(t.order_address),
-                                          shipping_address(t.shipping_address),
-                                          store_address(t.store_address),
-                                          category(t.category),
-                                          amount(t.amount),
-                                          payment_method(t.payment_method),
-                                          tip_amount(t.tip_amount),
-                                          delay_time(t.delay_time),
-                                          is_using_redeem(t.is_using_redeem),
-                                          is_pickup(t.is_pickup) {}
-};
-
-// #Helper variable
-struct TransactionsInString
-{
-    string user_id;
-    string time;
-    string order_address;
-    string shipping_address;
-    string store_address;
-    string category;
-    string amount;
-    string payment_method;
-    string tip_amount;
-    string delay_time;
-    string is_using_redeem;
-    string is_pickup;
-};
-
-// #Helper variable
-struct AllTransactionsInStringFile
-{
-    std::vector<TransactionsInString> AllTransactionsInString;
-};
-
-
-// Attributes structure
-struct Attributes
-{
-    set<Time> time;
-    set<Location> order_address;
-    set<Location> shipping_address;
-    set<Location> store_address;
-    set<Category> category;
-    set<Amount> amount;
-    set<PaymentMethod> payment_method;
-    set<TipAmount> tip_amount;
-    set<DelayTime> delay_time;
-    set<bool> is_using_redeem;
-    set<bool> is_pickup;
-};
-
-
-// Define the directed graph as logic graph of BP (LGBP)
-typedef boost::adjacency_list<boost::vecS, boost::vecS, boost::directedS> DiGraph;
-
-//Behavior Profile
-struct BehaviorProfile
-{
-    // User ID
-    string user_id;
-
-    // LGBP
-    DiGraph LGBP;
-
-    // Path-based transition probability matrix
-    // M_v for every nodes
-    vector<vector<vector<double>>> M_u;
-
-    // State transition probability matrix
-    vector<vector<vector<double>>> T_u;
-
-    // Diversity coefficient
-    double omega_u;
-};
-
-
-// Define the transaction map for the signal user
-#ifndef Transaction_For_Signal_User
-#define Transaction_For_Signal_User
-// (user_id, user_transactions)
-typedef map<string, vector<Transactions>> TransactionsForUsers;
-typedef map<string, set<Transactions>> UinqueTransactionsForUsers;
-typedef map<string, BehaviorProfile> BehaviorProfilesForAllUsers;
-#endif
+using nlohmann::json;
 
 class AllTransactions
 {
@@ -157,97 +46,202 @@ public:
 
     // #DEBUG
     // Print all transactions to json file with the given filename
-    void const printTransactionsToJsonFile(const string& filename = "All_Transactions.json");
+    void printTransactionsToJsonFile(const string& filename = "All_Transactions.json");
     // #DEBUG
     // Print certain user's transactions to json file with the given filename
-    void const printUserTransactionsToJsonFile(const string& user_id, const string& filename = "User_transactions.json");
+    void printUserTransactionsToJsonFile(const string& user_id, const string& filename = "User_transactions.json");
 
 
     // #DEBUG
     // Print all BP to json file with the given filename
-    void const printBPsToJsonFile(const string& filename = "All_BPs.json");
+    void printBPsToJsonFile(const string& filename = "All_BPs.json") const;
     // #DEBUG
     // Print certain user's BP to json file with the given filename
-    void const printUserBPToJsonFile(const string& user_id, const string& filename = "User's_BP.json");
+    void printUserBPToJsonFile(const string& user_id, const string& filename = "User's_BP.json") const;
 
 
     //--------------------------------------------------------------------------------
     // #Helper Functions
-    // Return the certain user's transactions
-    vector<Transactions> const getUserTransactions(const string& user_id);
+    // Return the certain user's transactions pointer
+    // Users responsibility to ensure the user_id is valid
+    vector<Transactions>& getUserTransactions(const string& user_id);
 
     // #Helper Functions
     // Return the certain user's BP
-    BehaviorProfile& const getUserBP(const string& user_id);
+    // Users responsibility to ensure the user_id is valid
+    BehaviorProfile& getUserBP(const string& user_id);
     
     //--------------------------------------------------------------------------------
 
 
     // #Constructor
+    // Update every variables value
+    void updateBP();
+
+    // Read unknown transactions from the json file
+    void readUnknownTransactionsFromFile(const string& filename = "Unknown_Transactions.json");
+
+    // Determine if the unknown transactions are fraud
+    void fraudDetection();
+
+    // #TODO
+    void printResultToJsonFile(const string& filename = "Result.json");
+
+
+    //--------------------------------------------------------------------------------
+    // #Helper Functions
+private:
+
+    // Help #Constructor
     // Initialize all transactions from the database
     // All precise data will be categorized into enumerated data
     void Initialize();
 
-    // #Constructor
-    // Update every variables value
-    void update();
+    void ToJson(json& j, const AllTransactionsInStringFile& at);
 
-
-    //--------------------------------------------------------------------------------
-    // #Helper Functions
-private:
     void PreprocessAllTransactionsInString(AllTransactionsInStringFile* all_transactions_in_string_file);
 
     // String to enum
-    Time StringToTime(const string& s);
-    Location StringToLocation(const string& s);
-    Category StringToCategory(const string& s);
-    Amount StringToAmount(const string& s);
-    PaymentMethod StringToPaymentMethod(const string& s);
-    TipAmount StringToTipAmount(const string& s);
-    DelayTime StringToDelayTime(const string& s);
-    bool StringToBool(const string& s);
+    Enumerators::Time StringToTime(const string& s) const;
+    Enumerators::Location StringToLocation(const string& s) const;
+    Enumerators::Category StringToCategory(const string& s) const;
+    Enumerators::Amount StringToAmount(const string& s) const;
+    Enumerators::PaymentMethod StringToPaymentMethod(const string& s) const;
+    Enumerators::TipAmount StringToTipAmount(const string& s) const;
+    Enumerators::DelayTime StringToDelayTime(const string& begin_time, const string& end_time) const;
+    bool StringToBool(const string& s) const;
+
+    // The UUID will have format:
+    // user_id + time + order_address + shipping_address + store_address + category + 
+    // amount + payment_method + tip_amount + delay_time + is_using_redeem + is_pickup
+    //
+    // Suppose we have       
+    // "user_id": "ABC123",
+    // "time": "08:00 15/03/2024", (morning)
+    // "order_address" : "123 Main St, Burnaby, BC V0V0V0", (Burnaby)
+    // "shipping_address" : "456 Elm St, Burnaby, BC V0V0V0", (Burnaby)
+    // "store_address" : "789 Oak St, Burnaby, BC V0V0V0", (Burnaby)
+    // "category" : "korean",
+    // "amount" : "20.00",
+    // "payment_method" : "credit_card",
+    // "tip_amount" : "3.00",
+    // "delay_time" : "10:00 16/03/2024", (morning)
+    // "is_using_redeem" : true
+    // "is_pickup" : false
+    // "frequency" : 1 // Base-35: 1-9, A-Z // #NEED_CHANGE Up to 35
+    // The UUID will be: ABC123MBBBKO011000101
+    string UUIDGenerator(const Transactions& transaction);
 
     void RemoveDuplicateRecords();
 
-    void initializeBP();
+    // #Deprecated
+    // Sort user's transactions by time (morning, noon, afternoon, evening)
+    void sortTransactionsByTime();
 
-    void initializeLGBP(const string& user_id);
-    void initializeM_u(const string& user_id);
-    void initializeT_u(const string& user_id);
-    void initializeOmega_u(const string& user_id);
+    // #TODO
+    map<string, bool> InitializeUnkonwnTransactions();
+
+
+    // ------------------------ Parameter Calculation ------------------------
+    // 
+    // Construct the LGBP(direct graph) for each user
+    // Each user's LGBP will contain all the transactions
+    // The graph vertex will be ordered by levels:
+    // Time, order_address, store_address, category, is_pickup, is_using_redeem, amount, tip_amount, delay_time, payment_method
+    void InitializeBP();
+
+    // Passing parameters into functions
+    void InitializeLGBP(const string& user_id);
+    void InitializeOmega_u(const string& user_id);
+    void InitializeM_v(const string& user_id);
+    void InitializeT_u(const string& user_id);
+
+    // #Helper Functions
+
+    // Return the perpaths of one vertex
+    vector<vector<DiGraph::vertex_descriptor>> getPerpaths(
+        const BehaviorProfile* behavior_profile, DiGraph::vertex_descriptor v, int v_attribute_level);
+
+    // Return the Postnodes of one vertex
+    vector<DiGraph::vertex_descriptor> getPostnodes(
+        const DiGraph& LGBP, DiGraph::vertex_descriptor v);
+
+    // ------------------------------------------------------------------------
+
+
+    string intToAttributeString(int i, int attribute_level) const;
+
+    // Return the frequency of the attribute in user's all transactions
+    int attributeFrequency(const string& user_id, int attribute_level, const string& attribute);
+
+    // Return the frequency of continue attribute in user's all transactions
+    int continueAttributeFrequency(const string& user_id, int attribute_level,
+        const string& front_attribute, const string& back_attribute);
+
+    // #Deprecated
+    // Check if a vertex is already in LGBP
+    // Judge by the attribute name
+    // True if find
+    // False if not
+    bool isVertexInLGBP(const string& user_id, const string& attribute_name, int level);
 
 
     // Enum to string
-    string TimeToString(const Time& t);
-    string LocationToString(const Location& l);
-    string CategoryToString(const Category& c);
-    string AmountToString(const Amount& a);
-    string PaymentMethodToString(const PaymentMethod& p);
-    string TipAmountToString(const TipAmount& t);
-    string DelayTimeToString(const DelayTime& d);
-    string BoolToString(const bool& b);
+    string AttributesToString(const Enumerators::Time& t) const;
+    string AttributesToString(const Enumerators::Location& l) const;
+    string AttributesToString(const Enumerators::Category& c) const;
+    string AttributesToString(const Enumerators::Amount& a) const;
+    string AttributesToString(const Enumerators::PaymentMethod& p) const;
+    string AttributesToString(const Enumerators::TipAmount& t) const;
+    string AttributesToString(const Enumerators::DelayTime& d) const;
+    string AttributesToString(const bool& b) const;
+    string AttributesToString(const int& b) const;
     
+
+    // ---------------------------- Fraud Detection ----------------------------
+
+    // #TODO
+    map<string, double> CalculateRecognizationDegree();
+
+    // #TODO
+    map<string, double> CaclulateAcceptanceDegree();
+
+    // #TODO
+    // Calculate the mean transaction records for the given user
+    double CalculateMeanAcceptanceDegree(const string& user_id);
+
+    // #TODO
+    // Initialize the threshold for all users in unknown transactions
+    void InitializeThreshold();
+
+    // --------------------------------------------------------------------------
+
 // #Variables
 private:
+    // <Attribute_level, attribute_member_number>
+    // For example: For type Time
+    // The attribute_level is 1
+    // The attribute_member_number is 4 (morning, noon, afternoon, evening)
+    static const map<int, int> attributes_number;
+
     set<string> all_users;
     int total_users_number;
+
+    // <user_id, threshold>
+    map<string, double> all_users_threshold;
+
+    // This k used to determine how many latest transactions record 
+    // will be considered by the mean acceptance degree
+    int k = 10;
     
 
     //--------------------------------------------------------------------------------
     // Known transactions
     // This set will be initialized directly from the database
     // May contain same records for a transaction
-    TransactionsForUsers all_transactions_include_same_records;
+    TransactionsForUsers all_users_transactions;
 
     int total_transactions_number;
-
-
-    //--------------------------------------------------------------------------------
-    // Known transactions
-    // Pure from the above set after copy
-    // Will not contain same records for a transaction
-    UinqueTransactionsForUsers all_transactions_without_same_records;
 
     int total_unique_transactions_number;
 
@@ -259,8 +253,11 @@ private:
 
 
     //--------------------------------------------------------------------------------
+    set<string> all_users_for_unknown_transactions;
+
     // unknown transactions
     // This set contain all the transactions waiting to be processed
+    
     TransactionsForUsers unknown_transactions;
 };
 
