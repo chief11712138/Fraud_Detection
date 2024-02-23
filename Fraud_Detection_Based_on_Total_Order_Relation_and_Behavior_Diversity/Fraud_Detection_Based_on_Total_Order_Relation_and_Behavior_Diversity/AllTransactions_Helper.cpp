@@ -26,6 +26,19 @@ void AllTransactions::PreprocessAllTransactionsInString(AllTransactionsInStringF
         // Add the UUID to the transaction
         transaction.UUID = UUIDGenerator(transaction);
 
+        transaction.attribute_with_level.insert({ 1, AttributesToString(transaction.time) });
+        transaction.attribute_with_level.insert({ 2, AttributesToString(transaction.store_address) });
+        transaction.attribute_with_level.insert({ 3, AttributesToString(transaction.order_address) });
+        transaction.attribute_with_level.insert({ 4, AttributesToString(transaction.shipping_address) });
+        transaction.attribute_with_level.insert({ 5, AttributesToString(transaction.category) });
+        transaction.attribute_with_level.insert({ 6, AttributesToString(transaction.is_pickup) });
+        transaction.attribute_with_level.insert({ 7, AttributesToString(transaction.is_using_redeem) });
+        transaction.attribute_with_level.insert({ 8, AttributesToString(transaction.amount) });
+        transaction.attribute_with_level.insert({ 9, AttributesToString(transaction.tip_amount) });
+        transaction.attribute_with_level.insert({ 10, AttributesToString(transaction.delay_time) });
+        transaction.attribute_with_level.insert({ 11, AttributesToString(transaction.payment_method) });
+
+
         // Add the transaction to all_transactions_include_same_records
         auto it = all_users_transactions.find(transaction.user_id);
         // Add transaction to the map

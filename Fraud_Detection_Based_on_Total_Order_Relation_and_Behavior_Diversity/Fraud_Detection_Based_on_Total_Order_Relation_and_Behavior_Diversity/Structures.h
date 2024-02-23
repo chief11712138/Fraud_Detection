@@ -50,6 +50,10 @@ struct Transactions
     Enumerators::PaymentMethod payment_method;
     
     int frequency;
+    
+    // <attribute_level, attribute_name>
+    // int : [1,10]
+    map<int, string> attribute_with_level;
 
     // Default Constructor
     Transactions() : user_id(""),
@@ -116,8 +120,10 @@ struct AllTransactionsInStringFile
     std::vector<TransactionsInString> AllTransactionsInString;
 };
 
+typedef boost::property<boost::vertex_name_t, std::string> VertexName;
+
 // Define the directed graph as logic graph of BP (LGBP)
-typedef boost::adjacency_list<boost::setS, boost::setS, boost::directedS> DiGraph;
+typedef boost::adjacency_list<boost::setS, boost::setS, boost::directedS, VertexName, boost::no_property> DiGraph;
 
 //Behavior Profile
 struct BehaviorProfile
@@ -140,7 +146,7 @@ struct BehaviorProfile
     // [1]-[11] following attributes order
     // [12] is tail node
     // For example:
-    // <attribute's level, <attribute_name, vertex_id>>
+    // <attribute level, <attribute_name, vertex_id>>
     map<int, map<string, DiGraph::vertex_descriptor>> all_attributes;
 
     // Path-based transition probability matrix
@@ -148,6 +154,7 @@ struct BehaviorProfile
     //
     // Perpaths will determine the matrix row size
     // Postnodes will determine the matrix column size
+    // <attribute level, <attribute_name, vertex_id>>
     map<int, map<string, matrix<double>>> M_v;
 
     // State transition probability matrix

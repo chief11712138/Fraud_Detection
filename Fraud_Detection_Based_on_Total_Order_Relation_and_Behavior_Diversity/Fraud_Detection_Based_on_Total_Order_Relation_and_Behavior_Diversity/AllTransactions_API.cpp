@@ -1,72 +1,65 @@
 #include "AllTransactions.h"
 
-// #UNTEST
 void AllTransactions::printTransactionsToJsonFile(const string& filename /*= "All_Transactions.json"*/)
 {
     // Serialize the data
-    json jAllTransactions;
-    AllTransactionsInStringFile all_transactions_in_string_file;
-    for (auto& user : all_users_transactions)
+    std::ofstream outResult(filename);
+    if (!outResult)
     {
-        for (auto& transaction : user.second)
-        {
-            TransactionsInString transaction_in_string;
-            transaction_in_string.user_id = transaction.user_id;
-            transaction_in_string.time = AttributesToString(transaction.time);
-            transaction_in_string.order_address = AttributesToString(transaction.order_address);
-            transaction_in_string.shipping_address = AttributesToString(transaction.shipping_address);
-            transaction_in_string.store_address = AttributesToString(transaction.store_address);
-            transaction_in_string.category = AttributesToString(transaction.category);
-            transaction_in_string.amount = AttributesToString(transaction.amount);
-            transaction_in_string.payment_method = AttributesToString(transaction.payment_method);
-            transaction_in_string.tip_amount = AttributesToString(transaction.tip_amount);
-            transaction_in_string.delay_time = AttributesToString(transaction.delay_time);
-            transaction_in_string.is_using_redeem = AttributesToString(transaction.is_using_redeem);
-            transaction_in_string.is_pickup = AttributesToString(transaction.is_pickup);
+        cerr << "Cannot open the file: " << filename << endl;
+        // #EXIT
+        exit(21);
+    }
 
-            all_transactions_in_string_file.AllTransactionsInString.push_back(transaction_in_string);
+    json jResult;
+    for (auto& user_id : all_users)
+    {
+        for (auto& transaction : all_users_transactions.at(user_id))
+        {
+            jResult.push_back({
+                {"UUID", transaction.UUID},
+                {"user_id", transaction.user_id},
+                {"Time", transaction.time},
+                {"Store Address", transaction.store_address},
+                {"Order Address", transaction.order_address},
+                {"Shipping Address", transaction.shipping_address}, 
+                {"Category", transaction.category}, 
+                {"Is pickup", transaction.is_pickup}, 
+                {"Is using redeem", transaction.is_using_redeem}, 
+                {"Amount", transaction.amount},
+                {"Tip amount", transaction.tip_amount}, 
+                {"Delay time", transaction.delay_time}, 
+                {"Payment method", transaction.payment_method},  });
         }
     }
 
-    ToJson(jAllTransactions, all_transactions_in_string_file);
-
-    // Write the json file
-    std::ofstream outAllTransactions(filename);
-    outAllTransactions << jAllTransactions;
-    outAllTransactions.close();
+    outResult << jResult.dump(4);
+    outResult.close();
 }
 
-// #UNTEST
-void AllTransactions::printUserTransactionsToJsonFile(const string& user_id, const string& filename /*= "User_transactions.json"*/)
+void AllTransactions::printResultToJsonFile(const string& filename /*= "Result.json"*/)
 {
-    // Serialize the data
-    json jUserTransactions;
-    AllTransactionsInStringFile user_transactions_in_string_file;
-    for (auto& transaction : all_users_transactions[user_id])
+    // Print fraud_detection_result to a json file with given name
+    // The print format will be "user_id, transaction.UUID, result"
+    std::ofstream outResult(filename);
+    if (!outResult)
     {
-        TransactionsInString transaction_in_string;
-        transaction_in_string.user_id = transaction.user_id;
-        transaction_in_string.time = AttributesToString(transaction.time);
-        transaction_in_string.order_address = AttributesToString(transaction.order_address);
-        transaction_in_string.shipping_address = AttributesToString(transaction.shipping_address);
-        transaction_in_string.store_address = AttributesToString(transaction.store_address);
-        transaction_in_string.category = AttributesToString(transaction.category);
-        transaction_in_string.amount = AttributesToString(transaction.amount);
-        transaction_in_string.payment_method = AttributesToString(transaction.payment_method);
-        transaction_in_string.tip_amount = AttributesToString(transaction.tip_amount);
-        transaction_in_string.delay_time = AttributesToString(transaction.delay_time);
-        transaction_in_string.is_using_redeem = AttributesToString(transaction.is_using_redeem);
-        transaction_in_string.is_pickup = AttributesToString(transaction.is_pickup);
-
-        user_transactions_in_string_file.AllTransactionsInString.push_back(transaction_in_string);
+        cerr << "Cannot open the file: " << filename << endl;
+        // #EXIT
+        exit(21);
     }
 
-    ToJson(jUserTransactions, user_transactions_in_string_file);
+    json jResult;
+    for (auto& user_id : all_users_for_unknown_transactions)
+    {
+        for (auto& transaction : fraud_detection_result.at(user_id))
+        {
+            jResult.push_back({ {"user_id", user_id}, {"UUID", transaction.first->UUID}, {"result", transaction.second} });
+        }
+    }
 
-    // Write the json file
-    std::ofstream outUserTransactions(filename);
-    outUserTransactions << jUserTransactions;
-    outUserTransactions.close();
+    outResult << jResult.dump(4);
+    outResult.close();
 }
 
 vector<Transactions>& AllTransactions::getUserTransactions(const string& user_id)

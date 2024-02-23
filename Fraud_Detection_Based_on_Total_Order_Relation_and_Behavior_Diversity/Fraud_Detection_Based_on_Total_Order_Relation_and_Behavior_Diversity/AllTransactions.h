@@ -47,17 +47,8 @@ public:
     // #DEBUG
     // Print all transactions to json file with the given filename
     void printTransactionsToJsonFile(const string& filename = "All_Transactions.json");
-    // #DEBUG
-    // Print certain user's transactions to json file with the given filename
-    void printUserTransactionsToJsonFile(const string& user_id, const string& filename = "User_transactions.json");
 
-
-    // #DEBUG
-    // Print all BP to json file with the given filename
-    void printBPsToJsonFile(const string& filename = "All_BPs.json") const;
-    // #DEBUG
-    // Print certain user's BP to json file with the given filename
-    void printUserBPToJsonFile(const string& user_id, const string& filename = "User's_BP.json") const;
+    void printResultToJsonFile(const string& filename = "Result.json");
 
 
     //--------------------------------------------------------------------------------
@@ -78,15 +69,8 @@ public:
     // Update every variables value
     void updateBP();
 
-    // Read unknown transactions from the json file
-    void readUnknownTransactionsFromFile(const string& filename = "Unknown_Transactions.json");
-
     // Determine if the unknown transactions are fraud
     void fraudDetection();
-
-    // #TODO
-    void printResultToJsonFile(const string& filename = "Result.json");
-
 
     //--------------------------------------------------------------------------------
     // #Helper Functions
@@ -97,7 +81,6 @@ private:
     // All precise data will be categorized into enumerated data
     void Initialize();
 
-    void ToJson(json& j, const AllTransactionsInStringFile& at);
 
     void PreprocessAllTransactionsInString(AllTransactionsInStringFile* all_transactions_in_string_file);
 
@@ -136,7 +119,6 @@ private:
     // Sort user's transactions by time (morning, noon, afternoon, evening)
     void sortTransactionsByTime();
 
-    // #TODO
     map<string, bool> InitializeUnkonwnTransactions();
 
 
@@ -194,21 +176,19 @@ private:
     string AttributesToString(const Enumerators::DelayTime& d) const;
     string AttributesToString(const bool& b) const;
     string AttributesToString(const int& b) const;
+
+    // #TODO
+    int AttributesStringToLevel(const string& s) const;
     
 
     // ---------------------------- Fraud Detection ----------------------------
 
-    // #TODO
-    map<string, double> CalculateRecognizationDegree();
+    map<string, map<Transactions*, double>> CalculateRecognizationDegree();
 
-    // #TODO
-    map<string, double> CaclulateAcceptanceDegree();
-
-    // #TODO
     // Calculate the mean transaction records for the given user
     double CalculateMeanAcceptanceDegree(const string& user_id);
 
-    // #TODO
+    // #NEED_CHANGE
     // Initialize the threshold for all users in unknown transactions
     void InitializeThreshold();
 
@@ -257,5 +237,8 @@ private:
     // This set contain all the transactions waiting to be processed
     
     TransactionsForUsers unknown_transactions;
+
+    // True is is a fraud, false is not a fraud
+    map<string, map<Transactions*, bool>> fraud_detection_result;
 };
 

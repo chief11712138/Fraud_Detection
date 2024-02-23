@@ -58,7 +58,7 @@ vector<vector<DiGraph::vertex_descriptor>> AllTransactions::getPerpaths(const Be
             }
         }
     }
-    
+    return perpaths;
 }
 
 vector<DiGraph::vertex_descriptor> AllTransactions::getPostnodes(const DiGraph& LGBP, DiGraph::vertex_descriptor v)

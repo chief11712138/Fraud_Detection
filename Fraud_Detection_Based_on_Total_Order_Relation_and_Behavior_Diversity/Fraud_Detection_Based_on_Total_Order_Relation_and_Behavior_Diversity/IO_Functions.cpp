@@ -56,9 +56,3 @@ void AllTransactions::Initialize()
     all_transactions_in_string_file = new AllTransactionsInStringFile();
     *all_transactions_in_string_file = jAllTransactions.get<AllTransactionsInStringFile>();
 }
-
-// #TODO
-void AllTransactions::ToJson(json& j, const AllTransactionsInStringFile& at)
-{
-
-}

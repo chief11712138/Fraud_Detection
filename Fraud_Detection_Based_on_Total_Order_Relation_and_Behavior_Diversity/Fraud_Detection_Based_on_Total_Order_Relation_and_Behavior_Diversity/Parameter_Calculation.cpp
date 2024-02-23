@@ -32,11 +32,11 @@ void AllTransactions::InitializeLGBP(const string& user_id)
         DiGraph::vertex_descriptor v_2;
 
         // Insert start vertex
-        v_1 = add_vertex(behavior_profile.LGBP);
+        v_1 = add_vertex({"start_vertex"}, behavior_profile.LGBP);
         behavior_profile.all_attributes[0].insert({ "start_vertex", v_1 });
 
         // Insert tail vertex
-        v_1 = add_vertex(behavior_profile.LGBP);
+        v_1 = add_vertex({ "tail_vertex" }, behavior_profile.LGBP);
         behavior_profile.all_attributes[12].insert({ "tail_vertex", v_1 });
 
 
@@ -44,7 +44,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
         for (auto& it : all_users_transactions[user_id])
         {
             // Insert time vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.time), behavior_profile.LGBP);
             // Insert time attributes into all_attributes
             behavior_profile.all_attributes[1].insert({ AttributesToString(it.time), v_1 });
 
@@ -52,7 +52,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(behavior_profile.all_attributes[0]["start_vertex"], v_1, behavior_profile.LGBP);
 
             // Insert store_address vertex into graph
-            v_2 = add_vertex(behavior_profile.LGBP);
+            v_2 = add_vertex(AttributesToString(it.order_address), behavior_profile.LGBP);
             // Insert store_address attributes into all_attributes
             behavior_profile.all_attributes[2].insert({ AttributesToString(it.order_address), v_2 });
 
@@ -60,7 +60,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_1, v_2, behavior_profile.LGBP);
 
             // Insert store_address vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.store_address), behavior_profile.LGBP);
             // Insert store_address attributes into all_attributes
             behavior_profile.all_attributes[3].insert({ AttributesToString(it.store_address), v_1 });
 
@@ -68,7 +68,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_2, v_1, behavior_profile.LGBP);
 
             // Insert category vertex into graph
-            v_2 = add_vertex(behavior_profile.LGBP);
+            v_2 = add_vertex(AttributesToString(it.category), behavior_profile.LGBP);
             // Insert category attributes into all_attributes
             behavior_profile.all_attributes[4].insert({ AttributesToString(it.category), v_2 });
 
@@ -76,7 +76,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_1, v_2, behavior_profile.LGBP);
 
             // Insert is_pickup vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.is_pickup), behavior_profile.LGBP);
             // Insert is_pickup attributes into all_attributes
             behavior_profile.all_attributes[5].insert({ AttributesToString(it.is_pickup), v_1 });
 
@@ -84,7 +84,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_2, v_1, behavior_profile.LGBP);
 
             // Insert is_using_redeem vertex into graph
-            v_2 = add_vertex(behavior_profile.LGBP);
+            v_2 = add_vertex(AttributesToString(it.is_using_redeem), behavior_profile.LGBP);
             // Insert is_using_redeem attributes into all_attributes
             behavior_profile.all_attributes[6].insert({ AttributesToString(it.is_using_redeem), v_2 });
 
@@ -92,7 +92,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_1, v_2, behavior_profile.LGBP);
 
             // Insert amount vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.amount), behavior_profile.LGBP);
             // Insert amount attributes into all_attributes
             behavior_profile.all_attributes[7].insert({ AttributesToString(it.amount), v_1 });
 
@@ -100,7 +100,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_2, v_1, behavior_profile.LGBP);
 
             // Insert tip_amount vertex into graph
-            v_2 = add_vertex(behavior_profile.LGBP);
+            v_2 = add_vertex(AttributesToString(it.tip_amount), behavior_profile.LGBP);
             // Insert tip_amount attributes into all_attributes
             behavior_profile.all_attributes[8].insert({ AttributesToString(it.tip_amount), v_2 });
 
@@ -108,7 +108,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_1, v_2, behavior_profile.LGBP);
 
             // Insert delay_time vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.delay_time), behavior_profile.LGBP);
             // Insert delay_time attributes into all_attributes
             behavior_profile.all_attributes[9].insert({ AttributesToString(it.delay_time), v_1 });
 
@@ -116,7 +116,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_2, v_1, behavior_profile.LGBP);
 
             // Insert payment_method vertex into graph
-            v_2 = add_vertex(behavior_profile.LGBP);
+            v_2 = add_vertex(AttributesToString(it.payment_method), behavior_profile.LGBP);
             // Insert payment_method attributes into all_attributes
             behavior_profile.all_attributes[10].insert({ AttributesToString(it.payment_method), v_2 });
 
@@ -124,7 +124,7 @@ void AllTransactions::InitializeLGBP(const string& user_id)
             add_edge(v_1, v_2, behavior_profile.LGBP);
 
             // Insert frequency vertex into graph
-            v_1 = add_vertex(behavior_profile.LGBP);
+            v_1 = add_vertex(AttributesToString(it.frequency), behavior_profile.LGBP);
             // Insert frequency attributes into all_attributes
             behavior_profile.all_attributes[11].insert({ AttributesToString(it.frequency), v_1 });
 
