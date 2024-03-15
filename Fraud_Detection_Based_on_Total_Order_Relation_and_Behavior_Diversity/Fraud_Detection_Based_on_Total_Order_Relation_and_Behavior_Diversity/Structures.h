@@ -31,24 +31,38 @@ using boost::numeric::ublas::matrix;
 // amount, tip_amount, delay_time, payment_method
 struct Transactions
 {
+    // #Deprecated
     // This UUID is limited in this system
     // Not represent the real UUID of the transaction from the database
     string UUID;
 
+    string card_id;
+
     string user_id;
 
     Enumerators::Time time;
+    // #Deprecated
     Enumerators::Location store_address;
     Enumerators::Location order_address;
     Enumerators::Location shipping_address;
+    // #Deprecated
     Enumerators::Category category;
+
+    string status;
+    string bank_return_code;
+
+    // #Deprecated
     bool is_pickup;
     bool is_using_redeem;
+
+    // amount = Converted Amount - Converted Amount Refunded
     Enumerators::Amount amount;
+
+    // #Deprecated
     Enumerators::TipAmount tip_amount;
     Enumerators::DelayTime delay_time;
     Enumerators::PaymentMethod payment_method;
-    
+
     int frequency;
     
     // <attribute_level, attribute_name>
