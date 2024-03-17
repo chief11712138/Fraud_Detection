@@ -22,17 +22,17 @@
     <ClCompile Include="Detection.cpp" />
     <ClCompile Include="EnumeratedData.h" />
     <ClCompile Include="Fraud_Detection_System.cpp" />
-    <ClCompile Include="i\O.cpp" />
+    <ClCompile Include="IO.cpp" />
     <ClCompile Include="LGBP&amp;BP.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Parameter Calculation.cpp" />
-    <ClCompile Include="Structure.h" />
+    <ClCompile Include="Parameter_Calculation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Fraud_Detection_System.h" />
+    <ClInclude Include="Structure.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

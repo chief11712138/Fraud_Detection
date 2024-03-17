@@ -27,19 +27,16 @@
     <ClCompile Include="Fraud_Detection_System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Structure.h">
-      <Filter>Header Files\Structures</Filter>
-    </ClCompile>
-    <ClCompile Include="i\O.cpp">
+    <ClCompile Include="Detection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Detection.cpp">
+    <ClCompile Include="IO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LGBP&amp;BP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Parameter Calculation.cpp">
+    <ClCompile Include="Parameter_Calculation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -49,6 +46,9 @@
   <ItemGroup>
     <ClInclude Include="Fraud_Detection_System.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Structure.h">
+      <Filter>Header Files\Structures</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
