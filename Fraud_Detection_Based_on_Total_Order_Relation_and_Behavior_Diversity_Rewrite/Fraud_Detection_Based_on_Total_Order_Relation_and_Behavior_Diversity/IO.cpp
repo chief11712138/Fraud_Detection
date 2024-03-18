@@ -24,7 +24,7 @@ bool Fraud_Detection_System::OutputResult(const string& file_name /*= "Fraud Det
     {
         for(auto& transaction_id : unknown_transactions[user_id])
         {
-            file << transaction_id.first << "," << (fraud_detection_result[transaction_id] ? "Valid" : "inValid") << "\n";
+             file << transaction_id.first << "," << (fraud_detection_result[transaction_id] ? "Valid" : "inValid") << "\n";
         }
     }
 
@@ -33,9 +33,12 @@ bool Fraud_Detection_System::OutputResult(const string& file_name /*= "Fraud Det
 
 void Fraud_Detection_System::ReadKnownData()
 {
-    // time, amount, payment_status, seller_message, card_id, user_id;
+    // time, amount, payment_status, card_id, user_id;
     vector<string> transaction_in_string;
     string transaction_id;
+
+    // <user_id, card_id>
+    map<string, vector<string>> card_id_list;
 
     // Read file from know data list file_name
     for (auto& file_name : known_data_file)
@@ -81,6 +84,12 @@ void Fraud_Detection_System::ReadKnownData()
                     }
                 }
 
+                // Insert to card_id_list
+                if (card_id_list.find(transaction_in_string[3]) != card_id_list.end())
+                {
+                    card_id_list[transaction_in_string[3]].push_back(transaction_in_string[3]);
+                }
+
                 PerProcessData(transaction_in_string, transaction_id, 0);
             }
 
@@ -92,6 +101,11 @@ void Fraud_Detection_System::ReadKnownData()
             // #Exit code -1
             exit(-1);
         }
+    }
+
+    for (auto& user_id : card_id_list)
+    {
+        card_id_number[user_id.first] = user_id.second.size();
     }
 }
 

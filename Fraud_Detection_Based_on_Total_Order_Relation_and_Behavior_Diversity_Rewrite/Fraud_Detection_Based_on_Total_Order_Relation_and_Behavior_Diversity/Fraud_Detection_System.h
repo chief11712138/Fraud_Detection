@@ -38,20 +38,17 @@ class Fraud_Detection_System
 {
 // Constructor
 public:
-    // #TODO
     Fraud_Detection_System();
 
 //--------------------------------------------------------------------------------
 
 // Fraud_Detection_System
 public:
-    // #TODO
     // Help constructor
     // Initialize all transactions from the database
     // All possible precise data will be categorized into enumerated data
     void Initialize();
 
-    // #TODO
     // Update everything in the system
     // Initialize again
     // Recalculate everything
@@ -101,49 +98,55 @@ private:
 
 // Parameter Calculation
 private:
-    // #TODO
     // Construct the LGBP(direct graph) for each user
     // Each user's LGBP will contain all the transactions
     // The graph vertex will be ordered by levels:
     // Time, order_address, store_address, category, is_pickup, is_using_redeem, amount, tip_amount, delay_time, payment_method
     void InitializeBP();
 
-    // #TODO
     void InitializeLGBP();
     // #TODO
     void InitializeOmega_u();
     // #TODO
     void InitializeM_v();
-
-
     // #TODO
     void InitializeT_u();
 
     // #Help function
 
-    // #TODO
+    string AttributesToString(Enumerators::Time time);
+    string AttributesToString(Enumerators::Amount amount);
+    string AttributesToString(bool payment_status);
+
     // Return the perpaths of one vertex
     vector<vector<DiGraph::vertex_descriptor>> getPerpaths(
         const BehaviorProfile* behavior_profile, DiGraph::vertex_descriptor v, int v_attribute_level);
 
-    // #TODO
-    // Return the Postnodes of one vertex
+    // Return the Postnodes of one vertex 
     vector<DiGraph::vertex_descriptor> getPostnodes(
         const DiGraph& LGBP, DiGraph::vertex_descriptor v);
 
+    int attributeFrequency(const string& user_id, int attribute_level, const string& attribute);
 
+    int continueAttributeFrequency(const string& user_id, int attribute_level, const string& front_attribute, const string& back_attribute);
+
+    string intToAttributeString(int i, int attribute_level) const;
 //--------------------------------------------------------------------------------
 
 // Variables
 private:
     // All users
-    set<string> users; 
+    set<string> users;
+
+    // Card_id numbers for each user
+    // <user_id, card_id_number>
+    map<string, int> card_id_number;
 
     // <user_id, <transaction_uuid, transaction>>
     map<string, map<string, Transaction>> transactions;
 
     // BP
-    map<string, BehaviorProfile> BehaviorProfiles;
+    map<string, BehaviorProfile> behavior_profiles;
 
     // #NEEDCHANGE
     // This k used to determine how many latest transactions record 
