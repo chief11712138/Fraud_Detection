@@ -111,7 +111,7 @@ void Fraud_Detection_System::ReadKnownData()
 
 void Fraud_Detection_System::ReadUnknownData()
 {
-    // time, amount, payment_status, seller_message, card_id, user_id;
+    // time, amount, payment_status, card_id, user_id;
     vector<string> transaction_in_string;
     string transaction_id;
 

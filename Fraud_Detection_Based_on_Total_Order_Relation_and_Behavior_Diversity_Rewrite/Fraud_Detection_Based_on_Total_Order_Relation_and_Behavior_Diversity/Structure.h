@@ -61,7 +61,7 @@ struct Transaction {
 
     // Overload operators
     bool operator==(const Transaction& t) const {
-        return (time == t.time) && (amount == t.amount) && (payment_status == t.payment_status) && (seller_message == t.seller_message) && (card_id == t.card_id) && (user_id == t.user_id);
+        return (time == t.time) && (amount == t.amount) && (payment_status == t.payment_status) && (card_id == t.card_id) && (user_id == t.user_id);
     }
 
     bool operator!=(const Transaction& t) const {
@@ -69,7 +69,7 @@ struct Transaction {
     }
 
     bool operator<(const Transaction& t) const {
-        return (time < t.time) || (amount < t.amount) || (payment_status < t.payment_status) || (seller_message < t.seller_message) || (card_id < t.card_id) || (user_id < t.user_id);
+        return (time < t.time) || (amount < t.amount) || (payment_status < t.payment_status) || (card_id < t.card_id) || (user_id < t.user_id);
     }
 };
 

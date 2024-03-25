@@ -34,6 +34,15 @@ using std::cerr;
 static const vector<string> known_data_file = {"2019-01-01 to 2019-12-31 stripe unified_payments"};
 static const vector<string> unknown_data_file = {"2019-01-01 to 2019-12-31 stripe unified_payments"};
 
+static const map<int, string> attribute_level_to_string = {
+    {0, "start_vertex"},
+    {1, "time"},
+    {2, "amount"},
+    {3, "payment_status"},
+    {4, "card_id"},
+    {5, "user_id"},
+};
+
 class Fraud_Detection_System
 {
 // Constructor
@@ -86,13 +95,23 @@ private:
 
 // Detection
 public:
-    // #TODO
     void FraudDetection();
 
 private:
-    map<string, map<Transaction*, double>> CalculateRecognizationDegree();
+    double CalculateRecognizationDegree(Transaction* unkonw_transaction);
+
+    double CalculateMeanAcceptanceDegree(const string& user_id);
+
+    // #TODO
+    double CalculateAcceptanceDegree(Transaction& transaction, double recognization degree);
 
     // #Help function 
+
+    // #TODO
+    DiGraph::vertex_descriptor getMaxTransitionNode(
+        const BehaviorProfile& bp, 
+        string current_vertex, 
+        int attribute_level);
 
 //--------------------------------------------------------------------------------
 
@@ -105,11 +124,11 @@ private:
     void InitializeBP();
 
     void InitializeLGBP();
-    // #TODO
+
     void InitializeOmega_u();
-    // #TODO
+
     void InitializeM_v();
-    // #TODO
+
     void InitializeT_u();
 
     // #Help function
@@ -131,6 +150,7 @@ private:
     int continueAttributeFrequency(const string& user_id, int attribute_level, const string& front_attribute, const string& back_attribute);
 
     string intToAttributeString(int i, int attribute_level) const;
+
 //--------------------------------------------------------------------------------
 
 // Variables
@@ -153,14 +173,23 @@ private:
     // will be considered by the mean acceptance degree
     int k = 10;
 
+    // #NEEDCHANGE
+    // This threshold used to determine whether the transaction is fraud
+    double threshold = 0.5;
+
     //--------------------------------------------------------------------------------
 
     // Unknown transactions users
     set<string> unknown_transactions_users;
 
     // Unknown transactions
-    // <transaction_id, transaction>
+    // <transaction_id, <transaction_id, transaction>>
     map<string, map<string, Transaction>> unknown_transactions;
+
+    // k Acceptance degree
+    // Insert when can't find
+    // <user_id, accept degree>
+    map<string, double> mean_acceptance_degree;
 
     // Fraud detection result
     // <transaction_id, transaction>
